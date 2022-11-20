@@ -43,5 +43,12 @@ class Graph:
             self.addVertex(v1)
         if v2 not in self.vertex_dict:
             self.addVertex(v2)
+        self.vertex_dict[v1].addNeighbor(self.vertex_dict[v2])
+        self.vertex_dict[v2].addNeighbor(self.vertex_dict[v1])
+    def getVertexes(self):
+        return self.vertex_dict.keys()
+
+    def __iter__(self):
+        return iter(self.vertex_dict.values())
 
 
