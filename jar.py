@@ -1,5 +1,3 @@
-import copy
-
 class Jar:
     def __init__(self, capacity, quantity):
         self.capacity = capacity
@@ -10,6 +8,8 @@ class Jar:
         return str(self.quantity)
     def __eq__(self, other: "Jar"):
         return self.capacity == other.capacity and self.quantity == other.quantity
+    def copy(self):
+        return Jar(self.capacity, self.quantity)
     def isFull(self):
         return self.quantity == self.capacity
     def isEmpty(self):
@@ -41,24 +41,25 @@ class State:
             if self.jars[i] != other.jars[i]:
                 b = False
         return b
+    def copy(self):
+        return State([jar.copy() for jar in self.jars])
     def simulate(self):
         #fills
         for i in range(len(self.jars)):
-            possibleState = copy.deepcopy(self)
+            possibleState = self.copy()
             possibleState.jars[i].fill()
             if self != possibleState and possibleState not in self.neighbors:
                 self.neighbors.append(possibleState)
         #empties
         for i in range(len(self.jars)):
-            possibleState = copy.deepcopy(self)
+            possibleState = self.copy()
             possibleState.jars[i].empty()
             if self != possibleState and possibleState not in self.neighbors:
                 self.neighbors.append(possibleState)
         #pours
         """for i in range(len(self.jars)):  
             for 
-            possibleState = copy.deepcopy(self)
-            possibleState.jars[i].empty()
+            possibleState = self.copy()
 
             if self != possibleState and possibleState not in self.neighbors:
                 self.neighbors.append(possibleState)"""
@@ -69,7 +70,7 @@ j2 = Jar(5,0)
 j3 = Jar(7,0)
 s = State([j1, j2, j3])
 s.simulate()
-print(s.neighbors)
+print(s, s.neighbors)
 for neighbor in s.neighbors:
     neighbor.simulate()
-    print(neighbor.neighbors)
+    print(neighbor, neighbor.neighbors)
